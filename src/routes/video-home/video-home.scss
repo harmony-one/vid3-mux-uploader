@@ -1,0 +1,16 @@
+.video-home {
+  margin: 0 auto;
+  width: 80%;
+  margin-bottom: 2em;
+  
+  .video-grid {
+    display: grid;
+    overflow: hidden;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    grid-gap: 1em;
+
+    video {
+      width: 100%;
+    }
+  }
+}
