@@ -1,37 +1,24 @@
-import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react'
-import {VideoInfo} from "../video-upload-info";
-
-
-const getVideoUrl = (video: VideoInfo) => {
-  if (!video) {
-    return '';
-  }
-
-  // @ts-ignore
-  return `/videos/upload/${video.id}`;
-}
+import React, {ChangeEvent, useCallback, useEffect, useState} from 'react'
+import {VideoInfo} from "./types";
+import {getVideoUrl, VideoItem} from "./VideoItem";
+import {client} from "./client";
 
 const VideoUpload = () => {
   const [file, setFile] =  useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [result, setResult] = useState<{data: VideoInfo} | undefined>();
+  const [result, setResult] = useState<VideoInfo | undefined>();
   const [videoList, setVideoList] = useState<VideoInfo[]>([]);
 
 
   const loadVideoList = useCallback(async () => {
-    const response = await fetch(`http://188.68.221.147:8080/videos`, {
-      method: 'Get',
-    });
+    const list = await client.loadVideoList();
 
-    const responseData = await response.json();
-
-    setVideoList(() => responseData.data);
-
+    setVideoList(() => list);
   }, []);
 
   useEffect(() => {
     loadVideoList();
-  }, [])
+  }, [loadVideoList])
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -54,16 +41,12 @@ const VideoUpload = () => {
       return true
     });
 
-    const response = await fetch('http://188.68.221.147:8080/upload', {
-      method: 'POST',
-      body: data
-    });
+    const response = await client.uploadVideo(data)
 
-    const result = await response.json();
-    setResult(result)
+    setResult(response)
 
     setUploading(() => false);
-  }, [uploading, file, result]);
+  }, [uploading, file]);
 
   return (
     <div>
@@ -75,7 +58,7 @@ const VideoUpload = () => {
 
       <br />
       <button onClick={handleUpload} disabled={uploading}>upload</button>
-      {result && <div><a href={getVideoUrl(result.data)}>Go To Video</a></div>}
+      {result && <div><a href={getVideoUrl(result)}>Go To Video</a></div>}
       {result && <code>{JSON.stringify(result, null, 4)}</code>}
       <br />
 
@@ -83,7 +66,7 @@ const VideoUpload = () => {
       {videoList && <div>
         {videoList.map((item) => {
           return (
-            <div key={item.id}>{item.id} {new Date(item.createdAt).toString()} <a href={getVideoUrl(item)}>Go to video</a></div>
+            <VideoItem video={item} />
           )
         })}
       </div>}
