@@ -1,21 +1,8 @@
 import React, { useCallback, useEffect, useState} from 'react'
 import {useParams} from "react-router-dom";
 import MuxPlayer from '@mux/mux-player-react';
-
-
-export interface VideoInfo {
-  id: string,
-  createdAt: string,
-  muxAsset: {
-    status: 'preparing' | 'ready' | 'errored',
-    playback_ids?: [
-      {
-        id: string
-      }
-    ]
-  }
-}
-
+import {VideoInfo} from "../video-upload/types";
+import {client} from "../video-upload/client";
 
 const isVideoReady = (video: VideoInfo) => {
   return video.muxAsset.status === 'ready';
@@ -35,13 +22,13 @@ const VideoUploadInfo = () => {
   const [video, setVideo] = useState<VideoInfo>();
 
   const loadVideo = useCallback(async () => {
-    const response = await fetch(`http://188.68.221.147:8080/videos/${videoId}`, {
-      method: 'Get',
-    });
+    if (!videoId) {
+      return;
+    }
 
-    const responseData = await response.json();
+    const responseData = await client.loadVideoInfo(videoId);
 
-    setVideo(() => responseData.data);
+    setVideo(() => responseData);
 
   }, [videoId]);
 
@@ -49,12 +36,13 @@ const VideoUploadInfo = () => {
     loadVideo()
   }, [loadVideo]);
 
+  const isVideoExistAndReady = video && isVideoReady(video);
   return (
     <div>
-      {!video || !isVideoReady(video) && (
+      {!isVideoExistAndReady && (
         <div>video preparing...</div>
       )}
-      {video && isVideoReady(video) && (
+      {isVideoExistAndReady && (
         <MuxPlayer
           streamType="on-demand"
           playbackId={getPlaybackId(video)}
