@@ -6,7 +6,7 @@ export const client = {
   loadVideoList: async () => {
     const response = await fetch(`${HOST}/videos`, {
       method: 'Get',
-      mode: 'no-cors',
+      mode: 'cors',
     });
 
     const responseData = await response.json();
@@ -18,7 +18,7 @@ export const client = {
     const response = await fetch(`${HOST}/upload`, {
       method: 'POST',
       body: data,
-      mode: 'no-cors',
+      mode: 'cors',
     });
 
     const responseData = await response.json();
@@ -28,7 +28,7 @@ export const client = {
   loadVideoInfo: async (videoId: string) => {
     const response = await fetch(`${HOST}/videos/${videoId}`, {
       method: 'Get',
-      mode: 'no-cors',
+      mode: 'cors',
     });
 
     const responseData = await response.json();
