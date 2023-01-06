@@ -1,27 +1,17 @@
-import React, {ChangeEvent, useCallback, useEffect, useState} from 'react'
+import React, {ChangeEvent, useCallback, useState} from 'react'
 import {VideoInfo} from "./types";
-import {getVideoUrl, VideoItem} from "./VideoItem";
 import {client} from "./client";
+import {Anchor, Box, Button, FileInput, Heading} from "grommet";
+import {getVideoUrl} from "../../router";
+import {BaseLayout} from "../../components/BaseLayout";
 
 const VideoUploadPage = () => {
   const [file, setFile] =  useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<VideoInfo | undefined>();
-  const [videoList, setVideoList] = useState<VideoInfo[]>([]);
 
-
-  const loadVideoList = useCallback(async () => {
-    const list = await client.loadVideoList();
-
-    setVideoList(() => list);
-  }, []);
-
-  useEffect(() => {
-    loadVideoList();
-  }, [loadVideoList])
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
+  const handleFileChange = (e?: ChangeEvent<HTMLInputElement>) => {
+    if (!e || !e.target.files) {
       return;
     }
 
@@ -49,28 +39,20 @@ const VideoUploadPage = () => {
   }, [uploading, file]);
 
   return (
-    <div>
-      <div>Video uploader</div>
-      <br />
-      <input type="file" name="video" onChange={handleFileChange} />
-      <br />
+    <BaseLayout>
+      <Box gap="medium">
+      <Heading>Video uploader</Heading>
+
+      <FileInput name="File" onChange={handleFileChange} />
+
+      <Button primary label="Upload" disabled={uploading} onClick={handleUpload} />
+
       {uploading && (<div>upload...</div>)}
 
-      <br />
-      <button onClick={handleUpload} disabled={uploading}>upload</button>
-      {result && <div><a href={getVideoUrl(result)}>Go To Video</a></div>}
+      {result && <div><Anchor href={getVideoUrl(result)}>Go To Video</Anchor></div>}
       {result && <code>{JSON.stringify(result, null, 4)}</code>}
-      <br />
-
-      <div>Uploaded video:</div>
-      {videoList && <div>
-        {videoList.map((item) => {
-          return (
-            <VideoItem video={item} />
-          )
-        })}
-      </div>}
-    </div>
+      </Box>
+    </BaseLayout>
   )
 }
 

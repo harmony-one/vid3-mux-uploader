@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import MuxPlayer from '@mux/mux-player-react';
 import {VideoInfo} from "../video-upload/types";
 import {client} from "../video-upload/client";
+import {BaseLayout} from "../../components/BaseLayout";
 
 const isVideoReady = (video: VideoInfo) => {
   return video.muxAsset.status === 'ready';
@@ -16,7 +17,7 @@ const getPlaybackId = (video: VideoInfo) => {
   return video.muxAsset.playback_ids[0].id;
 }
 
-const VideoUploadInfo = () => {
+const VideoDetailsPage = () => {
 
   const {videoId} = useParams();
   const [video, setVideo] = useState<VideoInfo>();
@@ -38,7 +39,7 @@ const VideoUploadInfo = () => {
 
   const isVideoExistAndReady = video && isVideoReady(video);
   return (
-    <div>
+    <BaseLayout>
       {!isVideoExistAndReady && (
         <div>video preparing...</div>
       )}
@@ -53,8 +54,8 @@ const VideoUploadInfo = () => {
           }}
         />
       )}
-    </div>
+    </BaseLayout>
   )
 }
 
-export default VideoUploadInfo
+export default VideoDetailsPage
