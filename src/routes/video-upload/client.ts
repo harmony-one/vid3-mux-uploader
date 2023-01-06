@@ -1,11 +1,12 @@
 
 
-const HOST = `https://02ef-188-68-221-147.eu.ngrok.io`
+const HOST = `https://2b74-188-68-221-147.eu.ngrok.io`;
 
 export const client = {
   loadVideoList: async () => {
     const response = await fetch(`${HOST}/videos`, {
       method: 'Get',
+      mode: 'no-cors',
     });
 
     const responseData = await response.json();
@@ -16,7 +17,8 @@ export const client = {
 
     const response = await fetch(`${HOST}/upload`, {
       method: 'POST',
-      body: data
+      body: data,
+      mode: 'no-cors',
     });
 
     const responseData = await response.json();
@@ -26,6 +28,7 @@ export const client = {
   loadVideoInfo: async (videoId: string) => {
     const response = await fetch(`${HOST}/videos/${videoId}`, {
       method: 'Get',
+      mode: 'no-cors',
     });
 
     const responseData = await response.json();
