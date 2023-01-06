@@ -1,6 +1,6 @@
 
 
-const HOST = `https://2b74-188-68-221-147.eu.ngrok.io`;
+const HOST = `http://188.68.221.147:8080`;
 
 export const client = {
   loadVideoList: async () => {
