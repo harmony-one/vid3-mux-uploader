@@ -3,7 +3,7 @@ import {VideoInfo} from "./types";
 import {getVideoUrl, VideoItem} from "./VideoItem";
 import {client} from "./client";
 
-const VideoUpload = () => {
+const VideoUploadPage = () => {
   const [file, setFile] =  useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<VideoInfo | undefined>();
@@ -74,4 +74,4 @@ const VideoUpload = () => {
   )
 }
 
-export default VideoUpload
+export default VideoUploadPage
