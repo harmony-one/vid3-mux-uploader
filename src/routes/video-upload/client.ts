@@ -1,8 +1,10 @@
 
 
+const HOST = `https://02ef-188-68-221-147.eu.ngrok.io`
+
 export const client = {
   loadVideoList: async () => {
-    const response = await fetch(`http://188.68.221.147:8080/videos`, {
+    const response = await fetch(`${HOST}/videos`, {
       method: 'Get',
     });
 
@@ -12,7 +14,7 @@ export const client = {
   },
   uploadVideo: async (data: FormData) => {
 
-    const response = await fetch('http://188.68.221.147:8080/upload', {
+    const response = await fetch(`${HOST}/upload`, {
       method: 'POST',
       body: data
     });
@@ -22,7 +24,7 @@ export const client = {
     return responseData.data;
   },
   loadVideoInfo: async (videoId: string) => {
-    const response = await fetch(`http://188.68.221.147:8080/videos/${videoId}`, {
+    const response = await fetch(`${HOST}/videos/${videoId}`, {
       method: 'Get',
     });
 
