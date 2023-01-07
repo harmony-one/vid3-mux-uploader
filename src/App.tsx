@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import './App.css';
 import VideoHome from './routes/video-home';
@@ -19,6 +19,7 @@ function App() {
           <Route path='/videos/upload' element={<VideoUploadPage />} />
           <Route path='/videos/upload/:videoId' element={<VideoUploadListPage />} />
           <Route path='/videos/:vanityUrl' element={<VideoReels />}/>
+          <Route path="*" element={<Navigate to="/videos/upload" replace={true} />} />
         </Routes>
       </div>
     </Providers>
