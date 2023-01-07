@@ -11,7 +11,6 @@
     "@types/node": "^16.18.11",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
-    "dotenv": "^16.0.3",
     "grommet": "^2.28.0",
     "grommet-icons": "^4.8.0",
     "mobx": "^6.7.0",
