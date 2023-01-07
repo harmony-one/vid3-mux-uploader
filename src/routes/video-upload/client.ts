@@ -1,6 +1,6 @@
+import {config} from "../../config";
 
-
-const HOST = `http://188.68.221.147:8080`;
+const HOST = config.uploader.host;
 
 export const client = {
   loadVideoList: async () => {
