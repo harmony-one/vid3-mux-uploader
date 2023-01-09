@@ -4,7 +4,6 @@ declare module '*.svg' {
   const src: string;
   export default src;
 }
-declare module 'react-video-thumbnail-image';
 declare module 'react-fb-image-video-grid';
 declare module "*.mov";
 declare module "*.jpg";
