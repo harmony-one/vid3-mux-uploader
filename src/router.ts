@@ -5,5 +5,5 @@ export const getVideoUrl = (video: VideoInfo) => {
     return '';
   }
 
-  return `/videos/upload/${video.id}`;
+  return `/videos/${video.url}`;
 }
