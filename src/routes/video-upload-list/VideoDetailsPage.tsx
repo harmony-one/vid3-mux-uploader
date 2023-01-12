@@ -19,19 +19,19 @@ const getPlaybackId = (video: VideoInfo) => {
 
 const VideoDetailsPage = () => {
 
-  const {videoId} = useParams();
+  const {vanityUrl} = useParams();
   const [video, setVideo] = useState<VideoInfo>();
 
   const loadVideo = useCallback(async () => {
-    if (!videoId) {
+    if (!vanityUrl) {
       return;
     }
 
-    const responseData = await client.loadVideoInfo(videoId);
+    const responseData = await client.loadVideoByUrl(vanityUrl);
 
     setVideo(() => responseData);
 
-  }, [videoId]);
+  }, [vanityUrl]);
 
   useEffect(() => {
     loadVideo()

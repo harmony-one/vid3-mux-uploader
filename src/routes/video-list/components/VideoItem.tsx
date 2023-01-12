@@ -29,6 +29,10 @@ export const VideoItem: React.FC<Props> = ({video}) => {
         <Text weight="bold">Asset status:</Text>
         <Text>{video.muxAssetStatus}</Text>
       </Box>
+      <Box direction="row" gap="medium">
+        <Text weight="bold">vanity url:</Text>
+        <Text>{video.url || 'empty'}</Text>
+      </Box>
       <Anchor href={getVideoUrl(video)}>Go to video</Anchor>
     </Box>
   </Box>;

@@ -1,12 +1,13 @@
 import React, {ChangeEvent, useCallback, useState} from 'react'
 import {VideoInfo} from "./types";
 import {client} from "./client";
-import {Anchor, Box, Button, FileInput, Heading} from "grommet";
+import {Anchor, Box, Button, FileInput, Heading, TextInput, FormField} from "grommet";
 import {getVideoUrl} from "../../router";
 import {BaseLayout} from "../../components/BaseLayout";
 
 const VideoUploadPage = () => {
   const [file, setFile] =  useState<File | null>(null);
+  const [url, setUrl] = useState<string>('');
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<VideoInfo | undefined>();
 
@@ -18,6 +19,10 @@ const VideoUploadPage = () => {
     setFile(e.target.files[0])
   };
 
+  const handleChangeUrl = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setUrl(event.target.value.trim().toLowerCase());
+  }, []);
+
   const handleUpload = useCallback(async () => {
 
     if (!file || uploading) {
@@ -26,6 +31,7 @@ const VideoUploadPage = () => {
 
     var data = new FormData()
     data.append('video', file);
+    data.append('url', url);
 
     setUploading(() => {
       return true
@@ -36,13 +42,15 @@ const VideoUploadPage = () => {
     setResult(response)
 
     setUploading(() => false);
-  }, [uploading, file]);
+  }, [uploading, file, url]);
 
   return (
     <BaseLayout>
       <Box gap="medium">
       <Heading>Video uploader</Heading>
-
+      <FormField label="Vanity URL" htmlFor="url">
+        <TextInput placeholder="Type url here..." name="url" onChange={handleChangeUrl} />
+      </FormField>
       <FileInput name="File" onChange={handleFileChange} />
 
       <Button primary label="Upload" disabled={uploading} onClick={handleUpload} />
