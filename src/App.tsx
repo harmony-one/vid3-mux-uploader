@@ -14,12 +14,12 @@ function App() {
     <Providers>
       <div className="App">
         <Routes>
-          <Route path='/videos' element={<VideoHome />} />
-          <Route path="/videos/list" element={<VideoListPage />} />
-          <Route path='/videos/upload' element={<VideoUploadPage />} />
-          <Route path='/videos/upload/:videoId' element={<VideoDetailsPage />} />
+          <Route path="/" element={<VideoListPage />} />
+          <Route path="/videos" element={<VideoListPage />} />
+          <Route path='/upload' element={<VideoUploadPage />} />
+          <Route path='/upload/:vanityUrl' element={<VideoDetailsPage />} />
           <Route path='/videos/:vanityUrl' element={<VideoDetailsPage />}/>
-          <Route path="*" element={<Navigate to="/videos/upload" replace={true} />} />
+          <Route path="*" element={<Navigate to="/upload" replace={true} />} />
         </Routes>
       </div>
     </Providers>
