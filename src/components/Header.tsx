@@ -7,8 +7,8 @@ export const Header: React.FC<Props> = () => {
   return (
     <GrommetHeader background="light-3" pad="small">
       <Nav direction="row">
-        <Anchor label="Upload" href="/videos/upload" />
-        <Anchor label="List of videos" href="/videos/list" />
+        <Anchor label="Upload" href="/upload" />
+        <Anchor label="List of videos" href="/videos" />
       </Nav>
     </GrommetHeader>
   )

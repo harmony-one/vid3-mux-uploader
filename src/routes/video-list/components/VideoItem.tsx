@@ -17,8 +17,8 @@ const getVideoPreviewUrl = (video: VideoInfo) => {
 
 export const VideoItem: React.FC<Props> = ({video}) => {
   return <Box direction="row" gap="medium">
-    <Box width="200px" height="200px">
-      <Image src={getVideoPreviewUrl(video)} alt="preview" />
+    <Box width="300px" height="169px">
+      <Image fit="cover" src={getVideoPreviewUrl(video)} alt="preview" />
     </Box>
     <Box align="start">
       <Box direction="row" gap="medium">
