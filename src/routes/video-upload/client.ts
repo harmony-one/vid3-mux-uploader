@@ -34,5 +34,15 @@ export const client = {
     const responseData = await response.json();
 
     return responseData.data;
+  },
+  loadVideoByUrl: async (videoUrl: string) => {
+    const response = await fetch(`${HOST}/videos/url/${videoUrl}`, {
+      method: 'Get',
+      mode: 'cors',
+    });
+
+    const responseData = await response.json();
+
+    return responseData.data;
   }
 }

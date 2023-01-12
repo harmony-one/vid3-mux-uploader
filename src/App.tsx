@@ -5,7 +5,7 @@ import './App.css';
 import VideoHome from './routes/video-home';
 import VideoReels from './routes/video-reels';
 import VideoUploadPage from "./routes/video-upload/VideoUploadPage";
-import VideoUploadListPage from "./routes/video-upload-list/VideoUploadListPage";
+import VideoDetailsPage from "./routes/video-upload-list/VideoDetailsPage";
 import {Providers} from "./Providers";
 import {VideoListPage} from "./routes/video-list/VideoListPage";
 
@@ -14,12 +14,12 @@ function App() {
     <Providers>
       <div className="App">
         <Routes>
-          <Route path='/videos' element={<VideoHome />} />
-          <Route path="/videos/list" element={<VideoListPage />} />
-          <Route path='/videos/upload' element={<VideoUploadPage />} />
-          <Route path='/videos/upload/:videoId' element={<VideoUploadListPage />} />
-          <Route path='/videos/:vanityUrl' element={<VideoReels />}/>
-          <Route path="*" element={<Navigate to="/videos/upload" replace={true} />} />
+          <Route path="/" element={<VideoListPage />} />
+          <Route path="/videos" element={<VideoListPage />} />
+          <Route path='/upload' element={<VideoUploadPage />} />
+          <Route path='/upload/:vanityUrl' element={<VideoDetailsPage />} />
+          <Route path='/videos/:vanityUrl' element={<VideoDetailsPage />}/>
+          <Route path="*" element={<Navigate to="/upload" replace={true} />} />
         </Routes>
       </div>
     </Providers>
