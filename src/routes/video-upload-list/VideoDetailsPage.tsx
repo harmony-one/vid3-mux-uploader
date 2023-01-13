@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useParams} from "react-router-dom";
 import MuxPlayer from '@mux/mux-player-react';
+import MuxPlayerElement from '@mux/mux-player';
 import {VideoInfo} from "../video-upload/types";
 import {client} from "../video-upload/client";
 import {BaseLayout} from "../../components/BaseLayout";
+import {Button} from "grommet";
 
 const isVideoReady = (video: VideoInfo) => {
   return video.muxAsset.status === 'ready';
@@ -33,6 +35,26 @@ const VideoDetailsPage = () => {
 
   }, [vanityUrl]);
 
+  const ref = useRef<MuxPlayerElement>(null);
+
+  const handleVolumeUp = useCallback(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    const v = ref.current.volume;
+    ref.current.volume = v + 0.1;
+  }, [ref]);
+
+  const handleVolumeDown = useCallback(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    const v = ref.current.volume;
+    ref.current.volume = v - 0.1;
+  }, [ref]);
+
   useEffect(() => {
     loadVideo()
   }, [loadVideo]);
@@ -45,6 +67,7 @@ const VideoDetailsPage = () => {
       )}
       {isVideoExistAndReady && (
         <MuxPlayer
+          ref={ref}
           streamType="on-demand"
           playbackId={getPlaybackId(video)}
           metadata={{
@@ -54,6 +77,10 @@ const VideoDetailsPage = () => {
           }}
         />
       )}
+
+      <Button label="volume up" onClick={handleVolumeUp} />
+      <Button label="volume down" onClick={handleVolumeDown} />
+
     </BaseLayout>
   )
 }
