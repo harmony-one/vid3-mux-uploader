@@ -2,8 +2,6 @@ import React from 'react';
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import './App.css';
-import VideoHome from './routes/video-home';
-import VideoReels from './routes/video-reels';
 import VideoUploadPage from "./routes/video-upload/VideoUploadPage";
 import VideoDetailsPage from "./routes/video-upload-list/VideoDetailsPage";
 import {Providers} from "./Providers";

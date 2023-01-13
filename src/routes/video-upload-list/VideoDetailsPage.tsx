@@ -27,7 +27,7 @@ const VideoDetailsPage = () => {
       return;
     }
 
-    const responseData = await client.loadVideoByUrl(vanityUrl);
+    const responseData = await client.loadVideoBySequenceId(vanityUrl);
 
     setVideo(() => responseData);
 

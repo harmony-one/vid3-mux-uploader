@@ -1,7 +1,8 @@
 import React from 'react';
+import {Box, Image, Text} from "grommet";
 import {VideoInfo} from "../../video-upload/types";
 import {getVideoUrl} from "../../../router";
-import {Anchor, Box, Image, Text} from "grommet";
+import {AnchorLink} from "../../../components/AnchorLink";
 
 interface Props {
   video: VideoInfo,
@@ -30,10 +31,10 @@ export const VideoItem: React.FC<Props> = ({video}) => {
         <Text>{video.muxAssetStatus}</Text>
       </Box>
       <Box direction="row" gap="medium">
-        <Text weight="bold">vanity url:</Text>
-        <Text>{video.url || 'empty'}</Text>
+        <Text weight="bold">Sequence ID:</Text>
+        <Text>{video.sequenceId || 'empty'}</Text>
       </Box>
-      <Anchor href={getVideoUrl(video)}>Go to video</Anchor>
+      <AnchorLink to={getVideoUrl(video)}>Go to video</AnchorLink>
     </Box>
   </Box>;
 };
