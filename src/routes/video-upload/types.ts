@@ -4,6 +4,7 @@ export interface VideoInfo {
   muxPlaybackId: string | '',
   muxAssetStatus: 'preparing' | 'ready' | 'error',
   url: string,
+  sequenceId: number,
   muxAsset: {
     status: 'preparing' | 'ready' | 'errored',
     playback_ids?: [

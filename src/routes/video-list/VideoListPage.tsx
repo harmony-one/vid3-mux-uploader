@@ -14,7 +14,7 @@ export const VideoListPage: React.FC<Props> = () => {
   const loadVideoList = useCallback(async () => {
     const list = await client.loadVideoList();
 
-    setVideoList(() => list);
+    setVideoList(() => list.slice(0, 3));
   }, []);
 
   useEffect(() => {
