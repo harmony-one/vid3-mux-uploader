@@ -15,9 +15,12 @@
     "@types/react-dom": "^18.0.10",
     "grommet": "^2.28.0",
     "grommet-icons": "^4.8.0",
+    "husky": "^8.0.3",
     "js-cookie": "^3.0.1",
+    "lint-staged": "^13.1.0",
     "mobx": "^6.7.0",
     "mobx-react-lite": "^3.4.0",
+    "prettier": "^2.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-fb-image-video-grid": "^0.1.10",
@@ -40,6 +43,16 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
     ]
   },
   "browserslist": {
