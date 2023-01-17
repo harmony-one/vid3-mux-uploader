@@ -1,8 +1,8 @@
-import React, {useCallback} from 'react';
-import {Header as GrommetHeader, Nav, Avatar, Button} from "grommet"
-import {Logout} from "grommet-icons";
-import {AnchorLink} from "./AnchorLink";
-import {metamaskStore} from "../stores/stores";
+import React, { useCallback } from "react";
+import { Header as GrommetHeader, Nav, Avatar, Button } from "grommet";
+import { Logout } from "grommet-icons";
+import { AnchorLink } from "./AnchorLink";
+import { metamaskStore } from "../stores/stores";
 
 interface Props {}
 
@@ -20,7 +20,7 @@ export const Header: React.FC<Props> = () => {
         <Button hoverIndicator onClick={handleLogout} icon={<Logout />} />
       </Nav>
     </GrommetHeader>
-  )
+  );
 };
 
-Header.displayName = 'Header';
+Header.displayName = "Header";

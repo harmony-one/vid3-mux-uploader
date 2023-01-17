@@ -1,24 +1,28 @@
 import { action, observable, makeObservable } from "mobx";
 import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
-import cookie from 'js-cookie';
+import cookie from "js-cookie";
 import { client } from "../routes/video-upload/client";
 
-const COOKIE_JWT = 'JWT';
+const COOKIE_JWT = "JWT";
 
 interface MetaMaskEthereumProvider {
   isMetaMask?: boolean;
   once(eventName: string | symbol, listener: (...args: any[]) => void): this;
   on(eventName: string | symbol, listener: (...args: any[]) => void): this;
   off(eventName: string | symbol, listener: (...args: any[]) => void): this;
-  addListener(eventName: string | symbol, listener: (...args: any[]) => void): this;
-  removeListener(eventName: string | symbol, listener: (...args: any[]) => void): this;
+  addListener(
+    eventName: string | symbol,
+    listener: (...args: any[]) => void
+  ): this;
+  removeListener(
+    eventName: string | symbol,
+    listener: (...args: any[]) => void
+  ): this;
   removeAllListeners(event?: string | symbol): this;
 }
 
-
 export class MetaMaskStore {
-
   private _provider: MetaMaskEthereumProvider | null = null;
   public address: string | null = null;
   public metamaskChainId: number | null = null;
@@ -28,7 +32,7 @@ export class MetaMaskStore {
   public loginInProgress = false;
 
   constructor() {
-    makeObservable<MetaMaskStore, '_provider' | '_providerPromise'>(this, {
+    makeObservable<MetaMaskStore, "_provider" | "_providerPromise">(this, {
       _provider: observable,
       address: observable,
       metamaskChainId: observable,
@@ -67,9 +71,9 @@ export class MetaMaskStore {
   }
 
   handleAccountsChanged(account: [string]) {
-    console.log('### accountChanged', account);
+    console.log("### accountChanged", account);
     if (account[0].length === 0) {
-      throw new Error('Metamask not found');
+      throw new Error("Metamask not found");
     } else {
       this.address = account[0];
     }
@@ -84,22 +88,22 @@ export class MetaMaskStore {
 
     // @ts-ignore
     if (provider !== window.ethereum) {
-      console.error('Do you have multiple wallets installed?');
+      console.error("Do you have multiple wallets installed?");
     }
 
     if (!provider) {
-      throw new Error('Metamask not found');
+      throw new Error("Metamask not found");
     }
 
     this._provider = provider;
 
-    this._provider.on('accountsChanged', this.handleAccountsChanged);
-    this._provider.on('chainChanged', chainId => {
+    this._provider.on("accountsChanged", this.handleAccountsChanged);
+    this._provider.on("chainChanged", (chainId) => {
       this.metamaskChainId = Number(chainId);
     });
 
-    this._provider.on('disconnect', () => {
-      console.log('### disconnect');
+    this._provider.on("disconnect", () => {
+      console.log("### disconnect");
       // this.isAuthorized = false;
       this.address = null;
     });
@@ -112,9 +116,9 @@ export class MetaMaskStore {
     try {
       this._providerPromise = this._providerPromise.then(this.registerProvider);
       await this._providerPromise;
-      console.log('### signin');
+      console.log("### signin");
     } catch (e) {
-      console.log('### e', e);
+      console.log("### e", e);
       this.loginInProgress = false;
       return;
     }
@@ -127,7 +131,7 @@ export class MetaMaskStore {
     try {
       const params = await this._provider
         // @ts-expect-error
-        .request({ method: 'eth_requestAccounts' });
+        .request({ method: "eth_requestAccounts" });
 
       this.handleAccountsChanged(params);
 
@@ -137,7 +141,7 @@ export class MetaMaskStore {
 
       // @ts-expect-error
       await this._provider.request({
-        method: 'wallet_requestPermissions',
+        method: "wallet_requestPermissions",
         params: [
           {
             eth_accounts: {},
@@ -146,10 +150,12 @@ export class MetaMaskStore {
       });
 
       if (this.address) {
-        const {nonce} = await client.requestNonce(this.address);
+        const { nonce } = await client.requestNonce(this.address);
 
         const message = `${nonce}`;
-        const hashMessage = web3.eth.accounts.hashMessage(web3.utils.utf8ToHex(message));
+        const hashMessage = web3.eth.accounts.hashMessage(
+          web3.utils.utf8ToHex(message)
+        );
         const signature = await web3.eth.sign(hashMessage, this.address);
         const result = await client.auth({ signature, address: this.address });
 

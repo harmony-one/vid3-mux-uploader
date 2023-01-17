@@ -6,6 +6,6 @@ export const AnchorLink: React.FC<AnchorLinkProps> = (props) => {
   return <Anchor as={Link} {...props} />;
 };
 
-export type AnchorLinkProps = LinkProps & AnchorExtendedProps
+export type AnchorLinkProps = LinkProps & AnchorExtendedProps;
 
-AnchorLink.displayName = 'AnchorLink';
+AnchorLink.displayName = "AnchorLink";
