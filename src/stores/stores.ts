@@ -1,3 +1,3 @@
-import {MetaMaskStore} from "./MetaMaskStore";
+import { MetaMaskStore } from "./MetaMaskStore";
 
 export const metamaskStore = new MetaMaskStore();

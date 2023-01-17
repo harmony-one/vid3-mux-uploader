@@ -1,10 +1,10 @@
-import React, {ReactNode} from 'react';
+import React, { ReactNode } from "react";
 
-import { Grommet } from 'grommet';
-import {baseTheme} from "./themes/baseTheme";
+import { Grommet } from "grommet";
+import { baseTheme } from "./themes/baseTheme";
 
 interface Props {
-  children: React.ReactNode | ReactNode[],
+  children: React.ReactNode | ReactNode[];
 }
 
 export const Providers: React.FC<Props> = ({ children }) => {
@@ -15,4 +15,4 @@ export const Providers: React.FC<Props> = ({ children }) => {
   );
 };
 
-Providers.displayName = 'Providers';
+Providers.displayName = "Providers";

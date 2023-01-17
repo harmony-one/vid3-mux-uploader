@@ -1,27 +1,26 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {useParams} from "react-router-dom";
-import MuxPlayer from '@mux/mux-player-react';
-import MuxPlayerElement from '@mux/mux-player';
-import {VideoInfo} from "../video-upload/types";
-import {client} from "../video-upload/client";
-import {BaseLayout} from "../../components/BaseLayout";
-import {Button} from "grommet";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import MuxPlayer from "@mux/mux-player-react";
+import MuxPlayerElement from "@mux/mux-player";
+import { VideoInfo } from "../video-upload/types";
+import { client } from "../video-upload/client";
+import { BaseLayout } from "../../components/BaseLayout";
+import { Button } from "grommet";
 
 const isVideoReady = (video: VideoInfo) => {
-  return video.muxAsset.status === 'ready';
-}
+  return video.muxAsset.status === "ready";
+};
 
 const getPlaybackId = (video: VideoInfo) => {
   if (!video.muxAsset.playback_ids) {
-    return '';
+    return "";
   }
 
   return video.muxAsset.playback_ids[0].id;
-}
+};
 
 const VideoDetailsPage = () => {
-
-  const {vanityUrl} = useParams();
+  const { vanityUrl } = useParams();
   const [video, setVideo] = useState<VideoInfo>();
 
   const loadVideo = useCallback(async () => {
@@ -32,7 +31,6 @@ const VideoDetailsPage = () => {
     const responseData = await client.loadVideoBySequenceId(vanityUrl);
 
     setVideo(() => responseData);
-
   }, [vanityUrl]);
 
   const ref = useRef<MuxPlayerElement>(null);
@@ -56,15 +54,13 @@ const VideoDetailsPage = () => {
   }, [ref]);
 
   useEffect(() => {
-    loadVideo()
+    loadVideo();
   }, [loadVideo]);
 
   const isVideoExistAndReady = video && isVideoReady(video);
   return (
     <BaseLayout>
-      {!isVideoExistAndReady && (
-        <div>video preparing...</div>
-      )}
+      {!isVideoExistAndReady && <div>video preparing...</div>}
       {isVideoExistAndReady && (
         <MuxPlayer
           ref={ref}
@@ -80,9 +76,8 @@ const VideoDetailsPage = () => {
 
       <Button label="volume up" onClick={handleVolumeUp} />
       <Button label="volume down" onClick={handleVolumeDown} />
-
     </BaseLayout>
-  )
-}
+  );
+};
 
-export default VideoDetailsPage
+export default VideoDetailsPage;
