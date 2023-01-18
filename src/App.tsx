@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import "./App.css";
 import VideoUploadPage from "./routes/video-upload/VideoUploadPage";
 import VideoDetailsPage from "./routes/video-upload-list/VideoDetailsPage";
 import { Providers } from "./Providers";
