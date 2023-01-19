@@ -164,7 +164,7 @@ export class MetaMaskStore {
         const result = await client.auth({ signature, address: this.address });
 
         this.jwt = result.token;
-        cookie.set(COOKIE_JWT, result.token);
+        cookie.set(COOKIE_JWT, result.token, { expires: 30 });
       }
 
       this.isAuthorized = true;
