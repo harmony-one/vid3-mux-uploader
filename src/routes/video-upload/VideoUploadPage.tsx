@@ -44,7 +44,7 @@ const VideoUploadPage = observer(() => {
       console.log("### ex", ex);
       setUploading(() => false);
     }
-  }, [uploading, file, metamaskStore.jwt]);
+  }, [uploading, file]);
 
   return (
     <BaseLayout>
