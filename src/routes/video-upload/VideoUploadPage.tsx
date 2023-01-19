@@ -71,7 +71,7 @@ const VideoUploadPage = observer(() => {
       console.log("### ex", ex);
       setUploading(() => false);
     }
-  }, [uploading, file, handleProgress]);
+  }, [uploading, file, handleProgress, navigate]);
 
   return (
     <BaseLayout>
