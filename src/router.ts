@@ -5,5 +5,5 @@ export const getVideoUrl = (video: VideoInfo) => {
     return "";
   }
 
-  return `/videos/${video.sequenceId}`;
+  return `/videos/${video.url}`;
 };

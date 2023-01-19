@@ -1,19 +1,25 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
 import { VideoItem } from "./components/VideoItem";
 import { VideoInfo } from "../video-upload/types";
 import { client } from "../video-upload/client";
 import { Box, Heading } from "grommet";
 import { BaseLayout } from "../../components/BaseLayout";
+import { metamaskStore } from "../../stores/stores";
 
 interface Props {}
 
-export const VideoListPage: React.FC<Props> = () => {
+export const VideoListPage: React.FC<Props> = observer(() => {
   const [videoList, setVideoList] = useState<VideoInfo[]>([]);
 
   const loadVideoList = useCallback(async () => {
-    const list = await client.loadVideoList();
+    if (!metamaskStore.address) {
+      return;
+    }
 
-    setVideoList(() => list.slice(0, 3));
+    const list = await client.loadVideoList(metamaskStore.address);
+
+    setVideoList(() => list);
   }, []);
 
   useEffect(() => {
@@ -23,17 +29,17 @@ export const VideoListPage: React.FC<Props> = () => {
   return (
     <BaseLayout>
       <Box pad="medium" gap="medium">
-        <Heading>Uploaded video</Heading>
+        <Heading>My videos</Heading>
         {videoList.length > 0 && (
           <Box gap="medium">
             {videoList.map((item) => {
-              return <VideoItem video={item} />;
+              return <VideoItem key={item.id} video={item} />;
             })}
           </Box>
         )}
       </Box>
     </BaseLayout>
   );
-};
+});
 
 VideoListPage.displayName = "VideoListPage";

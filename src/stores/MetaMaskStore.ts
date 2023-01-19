@@ -2,6 +2,7 @@ import { action, observable, makeObservable } from "mobx";
 import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
 import cookie from "js-cookie";
+import jwtDecode from "jwt-decode";
 import { client } from "../routes/video-upload/client";
 
 const COOKIE_JWT = "JWT";
@@ -48,6 +49,7 @@ export class MetaMaskStore {
     });
 
     this.checkAuth();
+    this.registerProvider();
   }
 
   async checkAuth() {
@@ -66,6 +68,8 @@ export class MetaMaskStore {
     }
 
     this.isAuthorized = true;
+    this.jwt = jwt;
+    this.address = jwtDecode<{ address: string }>(jwt).address;
     this.registerProvider();
     return true;
   }

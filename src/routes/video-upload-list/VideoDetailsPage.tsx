@@ -6,29 +6,30 @@ import { VideoInfo } from "../video-upload/types";
 import { client } from "../video-upload/client";
 import { BaseLayout } from "../../components/BaseLayout";
 import { Button } from "grommet";
+import { observer } from "mobx-react-lite";
+import { metamaskStore } from "../../stores/stores";
 
 const isVideoReady = (video: VideoInfo) => {
-  return video.muxAsset.status === "ready";
+  return video.muxAssetStatus === "ready";
 };
 
 const getPlaybackId = (video: VideoInfo) => {
-  if (!video.muxAsset.playback_ids) {
-    return "";
-  }
-
-  return video.muxAsset.playback_ids[0].id;
+  return video.muxPlaybackId;
 };
 
-const VideoDetailsPage = () => {
+const VideoDetailsPage = observer(() => {
   const { vanityUrl } = useParams();
   const [video, setVideo] = useState<VideoInfo>();
 
   const loadVideo = useCallback(async () => {
-    if (!vanityUrl) {
+    if (!vanityUrl || !metamaskStore.address) {
       return;
     }
 
-    const responseData = await client.loadVideoBySequenceId(vanityUrl);
+    const responseData = await client.loadVideoByUrl(
+      metamaskStore.address,
+      vanityUrl
+    );
 
     setVideo(() => responseData);
   }, [vanityUrl]);
@@ -78,6 +79,6 @@ const VideoDetailsPage = () => {
       <Button label="volume down" onClick={handleVolumeDown} />
     </BaseLayout>
   );
-};
+});
 
 export default VideoDetailsPage;
