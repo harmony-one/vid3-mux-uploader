@@ -21,10 +21,6 @@ const VideoDetailsPage = observer(() => {
   const { vanityUrl } = useParams();
   const [video, setVideo] = useState<VideoInfo>();
 
-  const handleRefresh = useCallback(() => {
-    loadVideo();
-  }, []);
-
   const loadVideo = useCallback(async () => {
     if (!vanityUrl || !metamaskStore.address) {
       return;
@@ -37,6 +33,10 @@ const VideoDetailsPage = observer(() => {
 
     setVideo(() => responseData);
   }, [vanityUrl]);
+
+  const handleRefresh = useCallback(() => {
+    loadVideo();
+  }, [loadVideo]);
 
   const ref = useRef<MuxPlayerElement>(null);
 
