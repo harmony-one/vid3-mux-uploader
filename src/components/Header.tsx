@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { Header as GrommetHeader, Nav, Avatar, Button } from "grommet";
-import { Logout } from "grommet-icons";
+import { Header as GrommetHeader, Nav, Button } from "grommet";
+import { Grommet, Logout } from "grommet-icons";
 import { AnchorLink } from "./AnchorLink";
 import { metamaskStore } from "../stores/stores";
 
@@ -13,7 +13,7 @@ export const Header: React.FC<Props> = () => {
 
   return (
     <GrommetHeader background="light-3" pad="small">
-      <Avatar background="brand">0x</Avatar>
+      <AnchorLink to="/" icon={<Grommet />} label="Uploader" />
       <Nav direction="row">
         <AnchorLink to="/upload" alignSelf="center" label="Upload" />
         <AnchorLink to="/videos" alignSelf="center" label="List of videos" />

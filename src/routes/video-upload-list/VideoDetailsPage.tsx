@@ -5,7 +5,6 @@ import MuxPlayerElement from "@mux/mux-player";
 import { VideoInfo } from "../video-upload/types";
 import { client } from "../video-upload/client";
 import { BaseLayout } from "../../components/BaseLayout";
-import { Button } from "grommet";
 import { observer } from "mobx-react-lite";
 import { metamaskStore } from "../../stores/stores";
 
@@ -36,24 +35,6 @@ const VideoDetailsPage = observer(() => {
 
   const ref = useRef<MuxPlayerElement>(null);
 
-  const handleVolumeUp = useCallback(() => {
-    if (!ref.current) {
-      return;
-    }
-
-    const v = ref.current.volume;
-    ref.current.volume = v + 0.1;
-  }, [ref]);
-
-  const handleVolumeDown = useCallback(() => {
-    if (!ref.current) {
-      return;
-    }
-
-    const v = ref.current.volume;
-    ref.current.volume = v - 0.1;
-  }, [ref]);
-
   useEffect(() => {
     loadVideo();
   }, [loadVideo]);
@@ -74,9 +55,6 @@ const VideoDetailsPage = observer(() => {
           }}
         />
       )}
-
-      <Button label="volume up" onClick={handleVolumeUp} />
-      <Button label="volume down" onClick={handleVolumeDown} />
     </BaseLayout>
   );
 });

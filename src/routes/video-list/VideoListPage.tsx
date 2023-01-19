@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { VideoItem } from "./components/VideoItem";
 import { VideoInfo } from "../video-upload/types";
 import { client } from "../video-upload/client";
-import { Box, Heading } from "grommet";
+import { Box, Heading, Spinner } from "grommet";
 import { BaseLayout } from "../../components/BaseLayout";
 import { metamaskStore } from "../../stores/stores";
 
@@ -12,14 +12,21 @@ interface Props {}
 export const VideoListPage: React.FC<Props> = observer(() => {
   const [videoList, setVideoList] = useState<VideoInfo[]>([]);
 
+  const [loading, setLoading] = useState(false);
+
   const loadVideoList = useCallback(async () => {
     if (!metamaskStore.address) {
       return;
     }
 
-    const list = await client.loadVideoList(metamaskStore.address);
+    setLoading(true);
 
-    setVideoList(() => list);
+    try {
+      const list = await client.loadVideoList(metamaskStore.address);
+      setVideoList(() => list);
+    } catch (ex) {}
+
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -37,6 +44,7 @@ export const VideoListPage: React.FC<Props> = observer(() => {
             })}
           </Box>
         )}
+        {loading && <Spinner />}
       </Box>
     </BaseLayout>
   );
