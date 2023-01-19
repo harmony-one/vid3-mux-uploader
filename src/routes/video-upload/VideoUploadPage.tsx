@@ -58,13 +58,17 @@ const VideoUploadPage = observer(() => {
       console.log("### ex", ex);
       setUploading(() => false);
     }
-  }, [uploading, file]);
+  }, [uploading, file, handleProgress]);
 
   return (
     <BaseLayout>
       <Box gap="medium">
         <Heading>Video uploader</Heading>
-        <FileInput name="File" onChange={handleFileChange} />
+        <FileInput
+          accept="video/mp4,video/x-m4v,video/*"
+          name="File"
+          onChange={handleFileChange}
+        />
 
         <Button
           primary
