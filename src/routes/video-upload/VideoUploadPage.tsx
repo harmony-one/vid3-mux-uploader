@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
 import { observer } from "mobx-react-lite";
+import { AxiosProgressEvent } from "axios";
+import { Box, Button, FileInput, Heading, Meter, Stack, Text } from "grommet";
 import { VideoInfo } from "./types";
 import { client } from "./client";
-import { Box, Button, FileInput, Heading } from "grommet";
 import { BaseLayout } from "../../components/BaseLayout";
 import { AnchorLink } from "../../components/AnchorLink";
 import { metamaskStore } from "../../stores/stores";
@@ -11,6 +12,7 @@ const VideoUploadPage = observer(() => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<VideoInfo | undefined>();
+  const [progress, setProgress] = useState(0);
 
   const handleFileChange = (e?: ChangeEvent<HTMLInputElement>) => {
     if (!e || !e.target.files) {
@@ -20,6 +22,14 @@ const VideoUploadPage = observer(() => {
     setFile(e.target.files[0]);
   };
 
+  const handleProgress = useCallback((event: AxiosProgressEvent) => {
+    const percentCompleted = Math.round(
+      (event.loaded * 100) / (event.total || event.bytes)
+    );
+
+    setProgress(percentCompleted);
+  }, []);
+
   const handleUpload = useCallback(async () => {
     // debugger;
     console.log("### metamaskStore.jwt", metamaskStore.jwt);
@@ -27,7 +37,7 @@ const VideoUploadPage = observer(() => {
       return;
     }
 
-    var data = new FormData();
+    const data = new FormData();
     data.append("video", file);
 
     setUploading(() => {
@@ -35,7 +45,11 @@ const VideoUploadPage = observer(() => {
     });
 
     try {
-      const response = await client.uploadVideo(data, metamaskStore.jwt);
+      const response = await client.uploadVideo(
+        data,
+        metamaskStore.jwt,
+        handleProgress
+      );
 
       setResult(response);
 
@@ -59,14 +73,23 @@ const VideoUploadPage = observer(() => {
           onClick={handleUpload}
         />
 
-        {uploading && <div>upload...</div>}
+        {uploading && (
+          <Box align="center">
+            <Stack alignSelf="center" anchor="center">
+              <Box>
+                <Meter round max={100} type="bar" value={progress} />
+              </Box>
+              <Text weight="bold">{progress}%</Text>
+            </Stack>
+          </Box>
+        )}
 
         {result && (
           <div>
             <AnchorLink to="/videos">Go to videos</AnchorLink>
           </div>
         )}
-        {result && <code>{JSON.stringify(result, null, 4)}</code>}
+        {/*{result && <code>{JSON.stringify(result, null, 4)}</code>}*/}
       </Box>
     </BaseLayout>
   );
