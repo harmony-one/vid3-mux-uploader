@@ -20,7 +20,12 @@ export const VideoItem: React.FC<Props> = ({ video }) => {
   return (
     <Box direction="row" gap="medium">
       <Box width="300px" height="169px">
-        <Image fit="cover" src={getVideoPreviewUrl(video)} alt="preview" />
+        <Image
+          fallback="/static/apple-touch-icon-180x180.svg"
+          fit="cover"
+          src={getVideoPreviewUrl(video)}
+          alt="preview"
+        />
       </Box>
       <Box align="start">
         <Box direction="row" fill="horizontal" justify="between" gap="medium">

@@ -6,6 +6,7 @@ import { client } from "../video-upload/client";
 import { Box, Heading, Spinner } from "grommet";
 import { BaseLayout } from "../../components/BaseLayout";
 import { metamaskStore } from "../../stores/stores";
+import { AnchorLink } from "../../components/AnchorLink";
 
 interface Props {}
 
@@ -44,7 +45,16 @@ export const VideoListPage: React.FC<Props> = observer(() => {
             })}
           </Box>
         )}
-        {loading && <Spinner />}
+        {loading && (
+          <Box align="center">
+            <Spinner size="large" message="loading..." />
+          </Box>
+        )}
+        {!loading && !videoList.length && (
+          <Box>
+            <AnchorLink to="/upload" label="Create first video" />
+          </Box>
+        )}
       </Box>
     </BaseLayout>
   );

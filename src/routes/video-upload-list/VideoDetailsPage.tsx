@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import MuxPlayer from "@mux/mux-player-react";
 import MuxPlayerElement from "@mux/mux-player";
+import { Box, Button, Spinner, Text } from "grommet";
 import { VideoInfo } from "../video-upload/types";
 import { client } from "../video-upload/client";
 import { BaseLayout } from "../../components/BaseLayout";
@@ -19,6 +20,10 @@ const getPlaybackId = (video: VideoInfo) => {
 const VideoDetailsPage = observer(() => {
   const { vanityUrl } = useParams();
   const [video, setVideo] = useState<VideoInfo>();
+
+  const handleRefresh = useCallback(() => {
+    loadVideo();
+  }, []);
 
   const loadVideo = useCallback(async () => {
     if (!vanityUrl || !metamaskStore.address) {
@@ -40,21 +45,34 @@ const VideoDetailsPage = observer(() => {
   }, [loadVideo]);
 
   const isVideoExistAndReady = video && isVideoReady(video);
+  const isVideoPreparing = video && video.muxAssetStatus === "preparing";
   return (
     <BaseLayout>
-      {!isVideoExistAndReady && <div>video preparing...</div>}
-      {isVideoExistAndReady && (
-        <MuxPlayer
-          ref={ref}
-          streamType="on-demand"
-          playbackId={getPlaybackId(video)}
-          metadata={{
-            video_id: "video-id-54321",
-            video_title: "Test video title",
-            viewer_user_id: "user-id-007",
-          }}
-        />
-      )}
+      <Box gap="medium" pad="medium">
+        {!isVideoExistAndReady && (
+          <Box align="center">
+            <Spinner size="large" message="loading..." />
+          </Box>
+        )}
+        {isVideoPreparing && (
+          <Box align="center" gap="medium">
+            <Text>Transcoding...</Text>
+            <Button primary onClick={handleRefresh} label="Refresh Page" />
+          </Box>
+        )}
+        {isVideoExistAndReady && (
+          <MuxPlayer
+            ref={ref}
+            streamType="on-demand"
+            playbackId={getPlaybackId(video)}
+            metadata={{
+              video_id: "video-id-54321",
+              video_title: "Test video title",
+              viewer_user_id: "user-id-007",
+            }}
+          />
+        )}
+      </Box>
     </BaseLayout>
   );
 });

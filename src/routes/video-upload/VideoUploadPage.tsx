@@ -1,18 +1,29 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { AxiosProgressEvent } from "axios";
-import { Box, Button, FileInput, Heading, Meter, Stack, Text } from "grommet";
+import {
+  Box,
+  Button,
+  FileInput,
+  Heading,
+  Meter,
+  Spinner,
+  Stack,
+  Text,
+} from "grommet";
 import { VideoInfo } from "./types";
 import { client } from "./client";
 import { BaseLayout } from "../../components/BaseLayout";
 import { AnchorLink } from "../../components/AnchorLink";
 import { metamaskStore } from "../../stores/stores";
+import { useNavigate } from "react-router-dom";
 
 const VideoUploadPage = observer(() => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<VideoInfo | undefined>();
   const [progress, setProgress] = useState(0);
+  const navigate = useNavigate();
 
   const handleFileChange = (e?: ChangeEvent<HTMLInputElement>) => {
     if (!e || !e.target.files) {
@@ -54,6 +65,8 @@ const VideoUploadPage = observer(() => {
       setResult(response);
 
       setUploading(() => false);
+
+      navigate(`/videos/`);
     } catch (ex) {
       console.log("### ex", ex);
       setUploading(() => false);
@@ -78,7 +91,10 @@ const VideoUploadPage = observer(() => {
         />
 
         {uploading && (
-          <Box align="center">
+          <Box align="center" gap="medium">
+            <Box align="center">
+              <Spinner size="large" message="loading..." />
+            </Box>
             <Stack alignSelf="center" anchor="center">
               <Box>
                 <Meter round max={100} type="bar" value={progress} />
@@ -90,10 +106,9 @@ const VideoUploadPage = observer(() => {
 
         {result && (
           <div>
-            <AnchorLink to="/videos">Go to videos</AnchorLink>
+            <AnchorLink to="/videos">Go to My Videos</AnchorLink>
           </div>
         )}
-        {/*{result && <code>{JSON.stringify(result, null, 4)}</code>}*/}
       </Box>
     </BaseLayout>
   );
