@@ -23,17 +23,21 @@ export const VideoItem: React.FC<Props> = ({ video }) => {
         <Image fit="cover" src={getVideoPreviewUrl(video)} alt="preview" />
       </Box>
       <Box align="start">
-        <Box direction="row" gap="medium">
+        <Box direction="row" fill="horizontal" justify="between" gap="medium">
           <Text weight="bold">Uploaded At:</Text>
           <Text>{new Date(video.createdAt).toLocaleDateString()}</Text>
         </Box>
-        <Box direction="row" gap="medium">
+        <Box direction="row" fill="horizontal" justify="between" gap="medium">
           <Text weight="bold">Asset status:</Text>
           <Text>{video.muxAssetStatus}</Text>
         </Box>
-        <Box direction="row" gap="medium">
+        <Box direction="row" fill="horizontal" justify="between" gap="medium">
           <Text weight="bold">Sequence ID:</Text>
           <Text>{video.sequenceId || "empty"}</Text>
+        </Box>
+        <Box direction="row" fill="horizontal" justify="between" gap="medium">
+          <Text weight="bold">URL:</Text>
+          <Text>{video.url || "empty"}</Text>
         </Box>
         <AnchorLink to={getVideoUrl(video)}>Go to video</AnchorLink>
       </Box>

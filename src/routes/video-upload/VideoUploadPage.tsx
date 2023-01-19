@@ -1,11 +1,13 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
+import { observer } from "mobx-react-lite";
 import { VideoInfo } from "./types";
 import { client } from "./client";
 import { Box, Button, FileInput, Heading } from "grommet";
 import { BaseLayout } from "../../components/BaseLayout";
 import { AnchorLink } from "../../components/AnchorLink";
+import { metamaskStore } from "../../stores/stores";
 
-const VideoUploadPage = () => {
+const VideoUploadPage = observer(() => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<VideoInfo | undefined>();
@@ -19,7 +21,9 @@ const VideoUploadPage = () => {
   };
 
   const handleUpload = useCallback(async () => {
-    if (!file || uploading) {
+    // debugger;
+    console.log("### metamaskStore.jwt", metamaskStore.jwt);
+    if (!file || uploading || !metamaskStore.jwt) {
       return;
     }
 
@@ -30,12 +34,17 @@ const VideoUploadPage = () => {
       return true;
     });
 
-    const response = await client.uploadVideo(data);
+    try {
+      const response = await client.uploadVideo(data, metamaskStore.jwt);
 
-    setResult(response);
+      setResult(response);
 
-    setUploading(() => false);
-  }, [uploading, file]);
+      setUploading(() => false);
+    } catch (ex) {
+      console.log("### ex", ex);
+      setUploading(() => false);
+    }
+  }, [uploading, file, metamaskStore.jwt]);
 
   return (
     <BaseLayout>
@@ -61,6 +70,6 @@ const VideoUploadPage = () => {
       </Box>
     </BaseLayout>
   );
-};
+});
 
 export default VideoUploadPage;

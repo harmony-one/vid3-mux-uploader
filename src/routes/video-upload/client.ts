@@ -49,8 +49,8 @@ export const client = {
       .catch(() => false);
   },
 
-  loadVideoList: async () => {
-    const response = await fetch(`${HOST}/videos`, {
+  loadVideoList: async (address: string) => {
+    const response = await fetch(`${HOST}/address/${address}/videos`, {
       method: "Get",
       mode: "cors",
     });
@@ -59,11 +59,14 @@ export const client = {
 
     return responseData.data;
   },
-  uploadVideo: async (data: FormData) => {
-    const response = await fetch(`${HOST}/upload`, {
+  uploadVideo: async (data: FormData, jwt: string) => {
+    const response = await fetch(`${HOST}/create`, {
       method: "POST",
       body: data,
       mode: "cors",
+      headers: {
+        Authorization: `bearer ${jwt}`,
+      },
     });
 
     const responseData = await response.json();
@@ -80,11 +83,14 @@ export const client = {
 
     return responseData.data;
   },
-  loadVideoByUrl: async (videoUrl: string) => {
-    const response = await fetch(`${HOST}/videos/url/${videoUrl}`, {
-      method: "Get",
-      mode: "cors",
-    });
+  loadVideoByUrl: async (address: string, videoUrl: string) => {
+    const response = await fetch(
+      `${HOST}/address/${address}/videos/${videoUrl}`,
+      {
+        method: "Get",
+        mode: "cors",
+      }
+    );
 
     const responseData = await response.json();
 
