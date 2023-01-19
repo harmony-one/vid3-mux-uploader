@@ -1,4 +1,5 @@
 import { config } from "../../config";
+import axios, { AxiosProgressEvent } from "axios";
 
 const HOST = config.uploader.host;
 
@@ -59,19 +60,22 @@ export const client = {
 
     return responseData.data;
   },
-  uploadVideo: async (data: FormData, jwt: string) => {
-    const response = await fetch(`${HOST}/create`, {
+  uploadVideo: async (
+    data: FormData,
+    jwt: string,
+    onProgress: (event: AxiosProgressEvent) => void
+  ) => {
+    const response = await axios.request({
+      url: `${HOST}/create`,
       method: "POST",
-      body: data,
-      mode: "cors",
       headers: {
         Authorization: `bearer ${jwt}`,
       },
+      data: data,
+      onUploadProgress: onProgress,
     });
 
-    const responseData = await response.json();
-
-    return responseData.data;
+    return response.data.data;
   },
   loadVideoInfo: async (videoId: string) => {
     const response = await fetch(`${HOST}/videos/${videoId}`, {
